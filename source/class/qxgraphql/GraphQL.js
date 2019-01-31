@@ -2,44 +2,33 @@ qx.Class.define("qxgraphql.GraphQL",
   {
     extend: qx.core.Object,
 
-    construct: function(url)
+    construct: function(address, transport)
     {
       this.base(arguments);
+      
 
-      if (this.url !== undefined) {
-        this.setUrl(url);
-      }
+      this.initTransport(transport || "qxgraphql.Xhr");
 
     },
 
     properties: {
 
-      /* if the request is cross domain */
-      crossDomain: {
-        check: "Boolean",
-        init: false
-      },
 
-      /* The GraphQL endpoint in the server */
-      url: {
-        check: "String",
-        nullable: true
-      },
-
-      /* The data format to send. Could be "POST" or "JSON" */
-      dataSendFormat: {
-        init: "POST",
+      /* The transport class to be used. Default qxgraphql.Xhr. */
+      transport: {
+        // for now we hardcode that class. Later, when more transport
+        // methods will be added, it will check for an interface
+        check: "qxgraphql.Xhr",
         nullable: false,
-        transform: "_transformDataSendFormat",
-        apply: "_applyDataSendFormat",
-        check: 'value in ["POST", "JSON"]'
-      },
+        transform: "_transformTransport",
+        deferredInit: true
+      }
+
 
     },
 
-    memebers: {
+    members: {
 
-      __contentType: null,
 
       // TODO: Add support for GET requests
       /**
@@ -49,26 +38,19 @@ qx.Class.define("qxgraphql.GraphQL",
       createRequest: function(){
         var request = new qx.io.request.Xhr(this.getUrl(), "POST");
         request.setAccept('application/json');
-        request.setRequestHeader("Content-Type", this.__contentType);
         return request;
       },
 
-      createQuery: function
+      createQuery: function(query_string, variables){
 
-      _transformDataSendFormat: function(value, old) {
-        return qx.lang.Type.isString(value) ? value.toUpperCase() : value;
+        query = {query: query_string}
+        if (qx.lang.Type.isObject(variables) && )
+
+      },
+
+      _transformTransport: function(){
+
       }
 
-      _applyDataSendFormat(val, old){
-        switch(val){
-          case "POST": 
-            this.__contentType = "application/x-www-form-urlencoded";
-            break;
-          case "JSON":
-            this.__contentType = "application/json";
-            break;
-          default: throw "this shouldn't happen";
-        }
-      }
     }
   });
