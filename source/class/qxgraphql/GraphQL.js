@@ -50,22 +50,15 @@ qx.Class.define("qxgraphql.GraphQL",
     },
 
     members: {
-      // Create query string. This may be replaced by a dedicated query object
-      createQuery: function(query_string, variables){
-        var query = {"query": query_string}
-        if (qx.lang.Type.isObject(variables) && !qx.lang.Object.isEmpty(variables)){
-          query = query["variables"] = variables;
-        }
-
-        return qx.lang.Json.stringify(query);
-      },
-
       createRequest: function(){
         var transportClass = qx.Class.getByName(this.getTansport());
         return new transportClass(this.getAddress());
       },
 
-      query: function(){
+      performQuery: function(query){
+        var request = this.createRequest();
+
+
 
       },
 
