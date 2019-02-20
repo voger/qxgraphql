@@ -64,7 +64,7 @@
       "library" :
       [
         {
-          "manifest" : "contrib://SkeletonApplication/trunk/Manifest.json"
+          "manifest" : "./Manifest.json"
         }
       ]
     }

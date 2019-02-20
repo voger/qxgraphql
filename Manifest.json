@@ -3,17 +3,16 @@
   {
     "name" : "qxgraphql",
 
-    "summary" : "Custom Application",
-    "description" : "This is a skeleton for a custom application with qooxdoo.",
+    "summary" : "GraphQL implementation for Qooxdoo",
+    "description" : "A simple GraphQL implementation for Qoxxodoo",
     
-    "homepage" : "http://some.homepage.url/",
+    "homepage" : "https://github.com/voger/qxgraphql",
 
-    "license" : "SomeLicense",
+    "license" : "MIT",
     "authors" : 
     [
       {
-        "name" : "First Author (uid)",
-        "email" : "first.author@some.domain"
+        "name" : "voger"
       }
     ],
 
@@ -26,9 +25,7 @@
     "namespace"   : "qxgraphql",
     "encoding"    : "utf-8",
     "class"       : "source/class",
-    "resource"    : "source/resource",
-    "translation" : "source/translation",
-    "type"        : "application"
+    "type"        : "library"
   }
 }
 

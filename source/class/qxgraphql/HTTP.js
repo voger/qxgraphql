@@ -30,6 +30,16 @@ qx.Class.define("qxgraphql.HTTP", {
       default: "application/json",
       nullable: false,
       event: "changeAccept",
+    },
+
+    /** The timeout for asynchronous calls in milliseconds.
+     * Default (0) means no limit
+     */
+    timeout: {
+      validate: '_validateTimeout',
+      nullable: false,
+      default: 0
+
     }
   },
 
@@ -42,6 +52,59 @@ qx.Class.define("qxgraphql.HTTP", {
       }
 
       return callback;
+    },
+
+    // Replace all qx.event.type.Rest with qxgraphql.event.type.GraphQL
+    // to make usage feel more consistent.
+    _tailorResource: function(resource) {
+      // inject different request implementation
+      resource.setRequestFactory(this._getRequest);
+
+      // inject different request handling
+      resource.setRequestHandler({
+        onsuccess: {
+          callback: function(req, action) {
+            return function() {
+              var props = [req.getResponse(), null, false, req, action, req.getPhase()];
+              this.fireEvent(action + "Success", qxgraphql.event.type.GraphQL, props);
+              this.fireEvent("success", qxgraphql.event.type.GraphQL, props);
+            };
+          },
+          context: this
+        },
+        onfail: {
+          callback: function(req, action) {
+            return function() {
+              var props = [req.getResponse(), null, false, req, action, req.getPhase()];
+              this.fireEvent(action + "Error", qxgraphql.event.type.GraphQL, props);
+              this.fireEvent("error", qxgraphql.event.type.GraphQL, props);
+            };
+          },
+          context: this
+        },
+        onloadend: {
+          callback: function(req, action) {
+            return function() {
+              req.dispose();
+            };
+          },
+          context: this
+        }
+      });
+
+      return resource;
+    },
+
+
+    _validateTimeout: function(value) {
+      try {
+        qx.core.Assert.assertPositiveInteger(value);
+      } 
+      catch {
+        throw new qx.core.ValidationError(
+          'ValidationError: ' + value + ' must be a positive integer.',
+        );
+      }
     }
   }
 
