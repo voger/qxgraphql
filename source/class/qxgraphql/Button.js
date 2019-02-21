@@ -14,5 +14,6 @@
  */
 qx.Class.define("qxgraphql.Button",
 {
-  extend : qx.ui.form.Button,
+  extend : qx.ui.form.Button
 });
+

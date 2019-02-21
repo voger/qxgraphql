@@ -1,36 +1,33 @@
-qx.Class.define("qxgraphql.Query",
-{
-  extend : qx.core.Object,
-  construct : function(query, variables)
-  {
+qx.Class.define("qxgraphql.Query", {
+  extend: qx.core.Object,
+
+  construct: function(query, variables) {
     this.base(arguments);
     if (query) {
       this.setQuery(query);
     }
     if (variables) {
-      this.setVariables(variables)
+      this.setVariables(variables);
     }
   },
-  properties :
-  {
-    query :
+  properties: {
+    query:
     {
-      check : "String",
-      init : null
+      check: "String",
+      init: null
     },
 
     // Can be created from an object literal or a JSON
-    variablesModel :
+    variablesModel:
     {
-      check : "Object",
-      init : null,
-      transform : "_transformVariablesModel"
+      check: "Object",
+      init: null,
+      transform: "_transformVariablesModel"
     }
   },
-  members :
+  members:
   {
-    toJsonString : function()
-    {
+    toJsonString: function() {
       var query_string = this.getQuery();
 
       // Query must not be empty. This check is done only in development
@@ -42,7 +39,7 @@ qx.Class.define("qxgraphql.Query",
 
       // initialize a new query map
       var query_map = {
-        query : query_string
+        query: query_string
       };
 
       // add variables to the query map if available
@@ -57,8 +54,7 @@ qx.Class.define("qxgraphql.Query",
      * Returns a Json representation of the variablesModel
      * If the variablesModel value is null, it returns null
      */
-    getVariablesJson : function()
-    {
+    getVariablesJson: function() {
       var model = this.getVariablesModel();
       var json = null;
       if (model !== null) {
@@ -66,8 +62,8 @@ qx.Class.define("qxgraphql.Query",
       }
       return json;
     },
-    _transformVariablesModel : function(val)
-    {
+
+    _transformVariablesModel: function(val) {
       var model = null;
       if (![null, undefined].includes(val)) {
         model = qx.data.marshal.Json.createModel(val);
