@@ -3,6 +3,9 @@
 /build/
 /test/
 /source/script/
+/compiled
+/contrib
+
 
 # node-related files
 /node_modules
