@@ -22,21 +22,21 @@ qx.Class.define("qxgraphql.HTTP", {
       check: "String",
       default: "application/json",
       nullable: false,
-      event: "changeContentType",
+      event: "changeContentType"
     },
 
     accept: {
       check: "String",
       default: "application/json",
       nullable: false,
-      event: "changeAccept",
+      event: "changeAccept"
     },
 
     /** The timeout for asynchronous calls in milliseconds.
      * Default (0) means no limit
      */
     timeout: {
-      validate: '_validateTimeout',
+      validate: "_validateTimeout",
       nullable: false,
       default: 0
 
@@ -44,12 +44,12 @@ qx.Class.define("qxgraphql.HTTP", {
   },
 
   members: {
-    _getConfigureRequestCallback(){
+    _getConfigureRequestCallback() {
       var resource = this;
-      var callback = function(req){
-        req.setRequestHeader("Content-Type", resource.getContentType())
+      var callback = function(req) {
+        req.setRequestHeader("Content-Type", resource.getContentType());
         req.setAccept(resource.getAccept());
-      }
+      };
 
       return callback;
     },
@@ -99,11 +99,8 @@ qx.Class.define("qxgraphql.HTTP", {
     _validateTimeout: function(value) {
       try {
         qx.core.Assert.assertPositiveInteger(value);
-      } 
-      catch {
-        throw new qx.core.ValidationError(
-          'ValidationError: ' + value + ' must be a positive integer.',
-        );
+      } catch (e) {
+        throw new qx.core.ValidationError("ValidationError: " + value + " must be a positive integer.");
       }
     }
   }
