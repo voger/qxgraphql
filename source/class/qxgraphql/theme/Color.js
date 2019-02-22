@@ -4,13 +4,13 @@
 
    License: MIT license
 
-   Authors: voger
+   Authors: 
 
 ************************************************************************ */
 
 qx.Theme.define("qxgraphql.theme.Color",
 {
-  extend : qx.theme.modern.Color,
+  extend : qx.theme.indigo.Color,
 
   colors :
   {

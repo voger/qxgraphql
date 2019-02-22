@@ -7,19 +7,22 @@
         "include": "qx.*"
       }
     },
+
     {
       "type": "build",
       "outputPath": "compiled/build"
     }
   ],
   "defaultTarget": "source",
-  "locales": [""],
+  "locales": ["en"],
 
   "applications": [
     {
       "class": "qxgraphql.demo.Application",
       "theme": "qxgraphql.theme.Theme",
-      "name": "qxgraphql"
+      "name": "qxgraphql",
+      "bootPath": "source/boot"
     }
-  ]
+  ],
+  "libraries": [ "../../../../opt/qooxdoo/framework", "." ]
 }

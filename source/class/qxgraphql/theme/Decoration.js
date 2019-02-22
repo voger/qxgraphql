@@ -4,13 +4,13 @@
 
    License: MIT license
 
-   Authors: voger
+   Authors: 
 
 ************************************************************************ */
 
 qx.Theme.define("qxgraphql.theme.Decoration",
 {
-  extend : qx.theme.classic.Decoration,
+  extend : qx.theme.indigo.Decoration,
 
   decorations :
   {
