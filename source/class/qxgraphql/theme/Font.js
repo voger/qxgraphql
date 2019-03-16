@@ -4,13 +4,13 @@
 
    License: MIT license
 
-   Authors: voger
+   Authors: 
 
 ************************************************************************ */
 
 qx.Theme.define("qxgraphql.theme.Font",
 {
-  extend : qx.theme.classic.Font,
+  extend : qx.theme.indigo.Font,
 
   fonts :
   {
