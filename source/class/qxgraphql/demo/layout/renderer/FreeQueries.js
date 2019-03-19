@@ -25,7 +25,7 @@ qx.Class.define("qxgraphql.demo.layout.renderer.FreeQueries", {
      */
     addItems: function(items, names, title, options) {
       // initialize the widgets column
-      if (this.__widgetsColumn) {
+      if (!this.__widgetsColumn) {
         var layout = new qx.ui.layout.VBox(5);
         this.__widgetsColumn = new qx.ui.container.Composite(layout);
         this._add(this.__widgetsColumn, {flex: 1});
@@ -42,7 +42,7 @@ qx.Class.define("qxgraphql.demo.layout.renderer.FreeQueries", {
     },
 
     addButton: function(button) {
-      if (this.__buttonsColumn) {
+      if (!this.__buttonsColumn) {
         // create the buttons column
         this.__buttonsColumn = new qx.ui.container.Composite();
         this.__buttonsColumn.setMargin(5);
