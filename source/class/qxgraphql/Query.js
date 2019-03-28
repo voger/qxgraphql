@@ -14,19 +14,25 @@ qx.Class.define("qxgraphql.Query", {
     query:
     {
       check: "String",
+      event: "changeQuery",
       init: null
     },
 
     // Can be created from an object literal or a JSON
-    variablesModel:
+    variables:
     {
       check: "Object",
       init: null,
-      transform: "_transformVariablesModel"
+      event: "changeVariables",
+      transform: "_transformVariables"
     }
   },
   members:
   {
+    /**
+     * Returns a JSON representation of the current object
+     *
+     */
     toJsonString: function() {
       var query_string = this.getQuery();
 
@@ -43,27 +49,27 @@ qx.Class.define("qxgraphql.Query", {
       };
 
       // add variables to the query map if available
-      var variables = this.getVariablesModel();
+      var variables = this.getVariables();
       if (variables) {
-        query_map["variables"] = variables;
+        query_map["variables"] = qx.util.Serializer.toJson(variables);
       }
       return qx.lang.Json.stringify(query_map);
     },
 
     /**
-     * Returns a Json representation of the variablesModel
-     * If the variablesModel value is null, it returns null
+     * Returns a Json representation of the variables
+     * If the variables value is null, it returns null
      */
     getVariablesJson: function() {
-      var model = this.getVariablesModel();
+      var model = this.getVariables();
       var json = null;
       if (model !== null) {
-        json = qx.util.Serialize.toJson(model);
+        json = qx.util.Serializer.toJson(model);
       }
       return json;
     },
 
-    _transformVariablesModel: function(val) {
+    _transformVariables: function(val) {
       var model = null;
       if (![null, undefined].includes(val)) {
         model = qx.data.marshal.Json.createModel(val);
