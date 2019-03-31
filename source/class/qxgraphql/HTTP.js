@@ -74,7 +74,7 @@ qx.Class.define("qxgraphql.HTTP", {
       request.setAccept(this.getAccept());
       request.setTimeout(this.getTimeout());
       request.setRequestHeader("Content-Type", this.getContentType());
-      request.setRequestData(query.toJsonString());
+      request.setRequestData(query.toJson());
 
       // set the rest of the headers
       // TODO: Add support for default headers object

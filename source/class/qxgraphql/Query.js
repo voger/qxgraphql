@@ -15,7 +15,7 @@ qx.Class.define("qxgraphql.Query", {
     {
       check: "String",
       event: "changeQuery",
-      init: null
+      init: ""
     },
 
     // Can be created from an object literal or a JSON
@@ -23,6 +23,7 @@ qx.Class.define("qxgraphql.Query", {
     {
       check: "Object",
       init: null,
+      nullable: true,
       event: "changeVariables",
       transform: "_transformVariables"
     }
@@ -30,30 +31,12 @@ qx.Class.define("qxgraphql.Query", {
   members:
   {
     /**
-     * Returns a JSON representation of the current object
-     *
+     * Returns a JSON representation of the current object.
+     * This is the method to use when serializing the query
+     * object to JSON and send it to the server.
      */
-    toJsonString: function() {
-      var query_string = this.getQuery();
-
-      // Query must not be empty. This check is done only in development
-      if (qx.core.Environment.get("qx.debug")) {
-        if (!query_string) {
-          throw new qx.core.ValidationError("Error: Query must be a non empty string.");
-        }
-      }
-
-      // initialize a new query map
-      var query_map = {
-        query: query_string
-      };
-
-      // add variables to the query map if available
-      var variables = this.getVariables();
-      if (variables) {
-        query_map["variables"] = qx.util.Serializer.toJson(variables);
-      }
-      return qx.lang.Json.stringify(query_map);
+    toJson: function() {
+      return JSON.stringify(this, this.__jsonReplacer);
     },
 
     /**
@@ -67,6 +50,28 @@ qx.Class.define("qxgraphql.Query", {
         json = qx.util.Serializer.toJson(model);
       }
       return json;
+    },
+
+    /**
+     * @internal
+     * The standard toJSON property of the object
+     *
+     */
+    toJSON: function(){
+      return {
+        query: this.getQuery(),
+        variables: this.getVariables()
+      }
+    },
+
+    __jsonReplacer: function(key, value) {
+      // Special case. If the variables key is an object, return it's JSON
+      // representation, otherwise remove that key from the final JSON
+      if(key === "variables") {
+        return value !== null ? qx.util.Serializer.toJson(value) : undefined;
+      }
+       // everything else s returned as it is
+      return value;
     },
 
     _transformVariables: function(val) {

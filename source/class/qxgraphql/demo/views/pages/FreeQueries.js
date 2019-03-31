@@ -80,7 +80,6 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
         // check that the query form is valid and url is not a falsy value
         if (form.validate() && this.__service.getUrl()) {
           this.__formController.updateModel();
-          console.log(this.__formController.getModel().toJsonString());
 
           this.__service.send(this.__formController.getModel(), null, this)
             .then(function(res) {
@@ -119,7 +118,11 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
       var target2model = {
         converter: function(data) {
-          return JSON.parse(data);
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            return null;
+          }
         }
       }
 
