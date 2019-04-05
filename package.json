@@ -1,0 +1,29 @@
+{
+  "name": "qxgraphql",
+  "version": "0.0.1",
+  "description": "<img src=\"https://raw.githubusercontent.com/voger/qxgraphql/master/images/uc.jpg?sanitize=true&raw=true\" />",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voger/qxgraphql.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/voger/qxgraphql/issues"
+  },
+  "homepage": "https://github.com/voger/qxgraphql#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "expose-loader": "^0.7.5",
+    "graphql-query-compress": "^1.2.1",
+    "license-webpack-plugin": "^2.1.1",
+    "qxcompiler": "^0.3.0-alpha.20190405-1228",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
