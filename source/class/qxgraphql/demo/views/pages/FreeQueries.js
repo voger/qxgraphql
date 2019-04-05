@@ -110,11 +110,11 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
       this.__formController = new qx.data.controller.Form(model, form, true);
 
-      var model2target =  {
+      var model2target = {
         converter: function(data, model, source, target) {
           return target.getValue();
         }
-      } 
+      }; 
 
       var target2model = {
         converter: function(data) {
@@ -124,7 +124,7 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
             return null;
           }
         }
-      }
+      };
 
       this.__formController.addBindingOptions("variables", model2target, target2model);
       return form;
