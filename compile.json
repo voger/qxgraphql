@@ -21,6 +21,7 @@
       "class": "qxgraphql.demo.Application",
       "theme": "qxgraphql.theme.Theme",
       "name": "qxgraphql",
+      "include": ["qxgraphql.GraphqlQueryCompress"],
       "bootPath": "source/boot"
     }
   ],

@@ -69,6 +69,11 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
       // Add a box to type the variables
       var variablesBox = new qx.ui.form.TextArea();
+
+      variablesBox.addListener("input", function(){
+        variablesBox.setValid(true)
+      }, this);
+
       form.add(variablesBox, "Variables", null, "variables", null, {flex: 1});
 
       // Add a button to perform the query
@@ -79,8 +84,6 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       execButton.addListener("execute", function() {
         // check that the query form is valid and url is not a falsy value
         if (form.validate() && this.__service.getUrl()) {
-          this.__formController.updateModel();
-
           this.__service.send(this.__formController.getModel(), null, this)
             .then(function(res) {
               let response = res.getResponse(); 
@@ -108,25 +111,44 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       marshaler.toClass(queryObject);
       var model = marshaler.toModel(queryObject);
 
-      this.__formController = new qx.data.controller.Form(model, form, true);
+      var formController = this.__formController = new qx.data.controller.Form(model, form);
 
-      var model2target = {
+
+      var model2query = {
+        converter: function(data, model, source, target) {
+          // disable binding back
+          return target.getValue();
+        }
+      }
+
+      formController.addBindingOptions("query", model2query);
+
+      var model2variables = {
         converter: function(data, model, source, target) {
           return target.getValue();
         }
       }; 
 
-      var target2model = {
+      var _this = this;
+      var variables2model = {
+        onSetFail: function(exception) {
+          variablesBox.setValid(false);
+          formController.getModel().resetVariables();
+        },
+
+
         converter: function(data) {
+          var result = null;
           try {
-            return JSON.parse(data);
+            result = JSON.parse(data);
           } catch (e) {
-            return null;
+            qx.log.Logger.error(_this, "Cannot parse variables data from: ", data);
           }
+          return result;
         }
       };
 
-      this.__formController.addBindingOptions("variables", model2target, target2model);
+      formController.addBindingOptions("variables", model2variables, variables2model);
       return form;
     },
 
@@ -146,5 +168,6 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
     __createButtonsField: function() {
       return new qxgraphql.demo.views.ButtonsContainer();
     }
+
   }
 });

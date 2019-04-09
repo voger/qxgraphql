@@ -7,24 +7,27 @@
 qx.Class.define("qxgraphql.Query", {
   extend: qx.core.Object,
 
-  construct: function(query, variables) {
+  construct: function(query = "", variables) {
     this.base(arguments);
+
+    // First load the compressor
+    this._compressor = new qxgraphql.GraphqlQueryCompress();
+
     if (query) {
       this.setQuery(query);
     }
     if (variables) {
       this.setVariables(variables);
     }
-
-    this._compressor = new qxgraphql.GraphqlQueryCompress();
   },
+
   properties: {
     query:
     {
       check: "String",
+      init: "",
       event: "changeQuery",
-      transform: "_transformQuery",
-      init: ""
+      transform: "_transformQuery"
     },
 
     // Can be created from an object literal or a JSON
@@ -34,7 +37,8 @@ qx.Class.define("qxgraphql.Query", {
       init: null,
       nullable: true,
       event: "changeVariables",
-      transform: "_transformVariables"
+      transform: "_transformVariables",
+      validate: "_validateVariables"
     }
   },
   members:
@@ -81,7 +85,7 @@ qx.Class.define("qxgraphql.Query", {
       if (key === "variables") {
         return value !== null ? qx.util.Serializer.toJson(value) : undefined;
       }
-       // everything else s returned as it is
+      // everything else s returned as it is
       return value;
     },
 
@@ -93,8 +97,15 @@ qx.Class.define("qxgraphql.Query", {
       return model;
     },
 
+    _validateVariables: function(val){
+      if (!qx.lang.Type.isObject(val) && (val !== null)){
+        throw new qx.core.ValidationError(
+          "Validation Error: " + val + " is not an object or null."
+        );
+      }
+    },
+
     _transformQuery: function(val) {
-      debugger;
       return this._compressor.compress(val);
     }
   }

@@ -5,20 +5,20 @@
 
     "summary" : "GraphQL implementation for Qooxdoo",
     "description" : "Simple GraphQL implementation for Qooxdoo",
-    
+
     "homepage" : "https://github.com/voger/qxgraphql",
 
     "license" : "MIT license",
     "authors" : [
-  {
-    "name": "",
-    "email": "voger"
-  }
-],
+      {
+        "name": "",
+        "email": "voger"
+      }
+    ],
 
     "version" : "0.0.1-alpha"
   },
-  
+
   "provides" : 
   {
     "namespace"   : "qxgraphql",
@@ -32,5 +32,11 @@
   "requires": {
     "qooxdoo-sdk"     : "^6.0.0-alpha-20181226-a3c2b0b",
     "qooxdoo-compiler": "^0.2.73"
+  },
+
+  "externalResources": {
+    "script": [
+      "js/gqcpr.js/gqcpr.js"
+    ]
   }
 }

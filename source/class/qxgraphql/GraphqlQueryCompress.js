@@ -8,22 +8,6 @@
 qx.Class.define("qxgraphql.GraphqlQueryCompress", {
   extend: qx.core.Object,
 
-  construct: function() {
-    this.base(arguments);
-    var dynLoader = new qx.util.DynamicScriptLoader(["js/gqcpr.js/gqcpr.js"]);
-
-    dynLoader.addListenerOnce("ready", function() {
-      console.log("all scripts have been loaded!");
-    });
-
-    dynLoader.addListener("failed", function(e) {
-      var data = e.getData();
-      console.log("failed to load " + data.script);
-    });
-
-    dynLoader.start();
-  },
-
   members: {
     /**
      * Compresses the query
