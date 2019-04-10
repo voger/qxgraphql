@@ -21,7 +21,7 @@
     "expose-loader": "^0.7.5",
     "graphql-query-compress": "^1.2.1",
     "license-webpack-plugin": "^2.1.1",
-    "qxcompiler": "^0.3.0-alpha.20190405-1228",
+    "qxcompiler": "^0.3.0-alpha.20190409-1543",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
