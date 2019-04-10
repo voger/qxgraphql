@@ -70,8 +70,8 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       // Add a box to type the variables
       var variablesBox = new qx.ui.form.TextArea();
 
-      variablesBox.addListener("input", function(){
-        variablesBox.setValid(true)
+      variablesBox.addListener("input", function() {
+        variablesBox.setValid(true);
       }, this);
 
       form.add(variablesBox, "Variables", null, "variables", null, {flex: 1});
@@ -119,7 +119,7 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
           // disable binding back
           return target.getValue();
         }
-      }
+      };
 
       formController.addBindingOptions("query", model2query);
 
@@ -139,10 +139,17 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
         converter: function(data) {
           var result = null;
-          try {
-            result = JSON.parse(data);
-          } catch (e) {
-            qx.log.Logger.error(_this, "Cannot parse variables data from: ", data);
+
+          if (data === "") {
+            result = null;
+          } else {
+            try {
+              result = JSON.parse(data);
+            } catch (e) {
+              qx.log.Logger.error(_this, "Cannot parse variables data from: ", data);
+              // let the model reject it so it can trigger onSetFail
+              result = data;
+            }
           }
           return result;
         }

@@ -97,8 +97,8 @@ qx.Class.define("qxgraphql.Query", {
       return model;
     },
 
-    _validateVariables: function(val){
-      if (!qx.lang.Type.isObject(val) && (val !== null)){
+    _validateVariables: function(val) {
+      if (!qx.lang.Type.isObject(val) && (val !== null)) {
         throw new qx.core.ValidationError(
           "Validation Error: " + val + " is not an object or null."
         );
