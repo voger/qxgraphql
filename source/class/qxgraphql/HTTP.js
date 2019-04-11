@@ -3,7 +3,7 @@ qx.Class.define("qxgraphql.HTTP", {
 
 
   /**
-   * Tailor qx.io.rest.Resource to work as a graphql client 
+   * Basic HTTP GraphQL client
    */
 
   construct : function(url) {
@@ -12,6 +12,8 @@ qx.Class.define("qxgraphql.HTTP", {
     if (url) { 
       this.setUrl(url);
     }
+
+    this.__requestHeaders = new Map();
   },
 
   events: {
@@ -60,6 +62,44 @@ qx.Class.define("qxgraphql.HTTP", {
   },
 
   members: {
+
+    __requestHeaders: null,
+
+    getHeaders: function() {
+      return this.__headers;
+    },
+
+    /**
+     * Adds a request key to the requests.  
+     * @param key {String} The name of the header whose value is to be set.
+     * @param value {String}  The value to set as the body of the header.
+     */
+    setRequestHeader: function(key, value) {
+      var lowerCase = key.toLowerCase();
+      // If the header is set from one of `this` properites
+      // treat it specially 
+      switch(lowerCase){
+        case "accept": 
+          this.setAccept(value);
+          this.__requestHeaders.set(lowerCase, [key, this.getAccept]);
+          break;
+        case "content-type":
+          this.setContentType(value);
+          this.__requestHeaders.set(lowerCase, [key, this.getContentType]);
+          break;
+        default:
+          this.__requestHeaders.set(lowerCase, [key, value]);
+      }
+    },
+    
+    getRequestHeader: function(key) {
+
+      var toLower = key.toLowerCase();
+       var val = this.__requestHeaders.get(toLower);
+
+
+
+    },
 
     /**
      * Sends the query and returns a promise.
