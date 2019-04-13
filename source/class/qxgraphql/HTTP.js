@@ -14,6 +14,10 @@ qx.Class.define("qxgraphql.HTTP", {
     }
 
     this.__requestHeaders = new Map();
+
+    // force _apply
+    this.initAccept();
+    this.initContentType();
   },
 
   events: {
@@ -34,12 +38,14 @@ qx.Class.define("qxgraphql.HTTP", {
     contentType: {
       check: "String",
       init: "application/json",
+      apply: "_applyContentType",
       nullable: false
     },
 
     accept: {
       check: "String",
       init: "application/json",
+      apply: "_applyAccept",
       nullable: false
     },
 
@@ -65,63 +71,95 @@ qx.Class.define("qxgraphql.HTTP", {
 
     __requestHeaders: null,
 
-    getHeaders: function() {
-      return this.__headers;
+    /**
+     * Returns a javascript Map() object with the headers that will be set
+     * to the request
+     *
+     */
+    getRequestHeaders: function() {
+      return this.__requestHeaders;
     },
 
+
     /**
-     * Adds a request key to the requests.  
+     * Returns the value of the header or `undefined` if the 
+     * header is not set
+     *
+     */
+    getRequestHeader: function(key) {
+      this.getRequestHeaders().get(key);
+    },
+
+
+    /**
+     * Adds a request key to the requests. Case sensitive. Keys with different 
+     * casing will produce duplicate entries.
      * @param key {String} The name of the header whose value is to be set.
      * @param value {String}  The value to set as the body of the header.
      */
     setRequestHeader: function(key, value) {
-      var lowerCase = key.toLowerCase();
+      let upperCase = key.toUpperCase();
+
       // If the header is set from one of `this` properites
       // treat it specially 
-      switch(lowerCase){
-        case "accept": 
+      switch (upperCase) {
+        case "ACCEPT": 
           this.setAccept(value);
-          this.__requestHeaders.set(lowerCase, [key, this.getAccept]);
           break;
-        case "content-type":
+        case "CONTENT-TYPE":
           this.setContentType(value);
-          this.__requestHeaders.set(lowerCase, [key, this.getContentType]);
           break;
         default:
-          this.__requestHeaders.set(lowerCase, [key, value]);
+          this.__requestHeaders.set(key, value);
       }
-    },
-    
-    getRequestHeader: function(key) {
-
-      var toLower = key.toLowerCase();
-       var val = this.__requestHeaders.get(toLower);
-
-
-
     },
 
     /**
+     * Removes a request header
+     * @param key {String} The header to be removed
+     */
+    removeRequestHeader: function(key) {
+      let upperCase = key.toUpperCase();
+
+      // If the header is set from one of `this` properites
+      // treat it specially 
+      switch (upperCase) {
+        case "ACCEPT":
+          this.setAccept(null);
+          break;
+        case "CONTENT-TYPE":
+          this.setContentType(null);
+          break;
+        default:
+          this.getRequestHeaders().delete(key);
+      }
+    },
+
+
+    /**
      * Sends the query and returns a promise.
-     * @query 
-     *
+     * @query {String} The query to send
+     * @headers {Object} An object of key value pairs with the request headers. 
+     *                   These headers will be used instead of the default headers 
+     *                   set in this object
+     * @scope {Object} The scope to which the promise object is bound
+     * @return {qx.Promise}
      */
     send: function(query, headers, scope) {
-      var request = this.__getRequest();
+      const request = this.__getRequest();
       request.setUrl(this.getUrl());
-      // only POST is supported
+      // only POST is supported for now
       request.setMethod("POST");
-      request.setAccept(this.getAccept());
       request.setTimeout(this.getTimeout());
-      request.setRequestHeader("Content-Type", this.getContentType());
-      request.setRequestData(query.toJson());
 
-      // set the rest of the headers
-      // TODO: Add support for default headers object
-      headers = headers && headers.isObject() ? headers : {};
-      Object.keys(headers).forEach(function(key) {
-        request.setRequestHeader(key, request[key]);
-      });
+      const requestHeaders = headers ? 
+        Object.entries(headers) : this.getRequestHeaders();
+
+      requestHeaders.forEach((value, header) => 
+        request.setRequestHeader(header, value));
+
+
+      request.setRequestData(query.toJson());
 
       // cache the scope 
       var service = this;
@@ -157,11 +195,28 @@ qx.Class.define("qxgraphql.HTTP", {
     },
 
 
+
     _validateTimeout: function(value) {
       try {
         qx.core.Assert.assertPositiveInteger(value);
       } catch (e) {
-        throw new qx.core.ValidationError("ValidationError: " + value + " must be a positive integer.");
+        throw new qx.core.ValidationError(`ValidationError: Time out value must be a positive integer. Found : ${value}.`);
+      }
+    },
+
+    _applyAccept: function(value) {
+      if (value === null) {
+        this.removeRequestHeader("Accept");
+      } else {
+        this.getRequestHeaders().set("Accept", value);
+      }
+    },
+
+    _applyContentType: function(value) {
+      if (value === null) {
+        this.removeRequestHeader("Content-Type");
+      } else {
+        this.getRequestHeaders().set("Content-Type", value);
       }
     }
   }
