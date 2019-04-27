@@ -39,14 +39,14 @@ qx.Class.define("qxgraphql.HTTP", {
       check: "String",
       init: "application/json",
       apply: "_applyContentType",
-      nullable: false
+      nullable: true
     },
 
     accept: {
       check: "String",
       init: "application/json",
       apply: "_applyAccept",
-      nullable: false
+      nullable: true
     },
 
     /** The timeout for asynchronous calls in milliseconds.
@@ -133,6 +133,21 @@ qx.Class.define("qxgraphql.HTTP", {
         default:
           this.getRequestHeaders().delete(key);
       }
+    },
+
+
+    /**
+     * Clears all the headers. Please note that it also
+     * resets `Accept` and `Content-Type` headers to null.
+     *
+     */
+    clearRequestHeaders: function() {
+      // first clear `this` properties
+      this.setAccept(null);
+      this.setContentType(null);
+
+      // then clear everything else
+      this.getRequestHeaders().clear();
     },
 
 

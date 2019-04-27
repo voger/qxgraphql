@@ -15,6 +15,7 @@ qx.Class.define("qxgraphql.GraphqlQueryCompress", {
      * @return {String} The compressed string
      */
     compress: function(query) {
+      // eslint-disable-next-line no-undef
       return graphQLCompress(query);
     }
   }

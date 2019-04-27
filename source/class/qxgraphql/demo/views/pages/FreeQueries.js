@@ -6,14 +6,24 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
     this.init();
   },
 
+  events: {
+    "changeService" :  "qx.event.type.Data"
+  },
+
+  properties: {
+    service: {
+      init: null,
+      event: "changeService"
+    }
+  },
+
   members: {
     __formController: null,
     __resultController: null,
-    __service: null,
 
     init: function() {
       this.setLayout(new qx.ui.layout.Dock(30));
-      this.__service = new qxgraphql.HTTP();
+      this.setService(new qxgraphql.HTTP());
 
       var urlForm = this.__createUrlForm();
       this.add(new qx.ui.form.renderer.Single(urlForm), {edge: "north"});
@@ -38,8 +48,9 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       urlField.setRequired(true);
 
       // if service is set then setup binding
-      if (this.__service) {
-        urlField.bind("changeValue", this.__service, "url", {
+      const service = this.getService();
+      if (service) {
+        urlField.bind("changeValue", service, "url", {
           onUpdate: function(e) {
             urlField.setValid(true);
           },
@@ -83,8 +94,9 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
       execButton.addListener("execute", function() {
         // check that the query form is valid and url is not a falsy value
-        if (form.validate() && this.__service.getUrl()) {
-          this.__service.send(this.__formController.getModel(), null, this)
+        const service = this.getService();
+        if (form.validate() && service.getUrl()) {
+          service.send(this.__formController.getModel(), null, this)
             .then(function(res) {
               let response = res.getResponse(); 
               let result = JSON.stringify(response, null, 2);
@@ -167,13 +179,12 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       var model = qx.data.marshal.Json.createModel({result: null});
       this.__resultController = new qx.data.controller.Object(model);
 
-      // TODO: add logic to beautify JSON
       this.__resultController.addTarget(resultField, "value", "result");
       return resultField;
     },
 
     __createButtonsField: function() {
-      return new qxgraphql.demo.views.ButtonsContainer();
+      return new qxgraphql.demo.views.ButtonsContainer(this);
     }
 
   }
