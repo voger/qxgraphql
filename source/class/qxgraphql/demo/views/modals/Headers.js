@@ -33,10 +33,9 @@ qx.Class.define("qxgraphql.demo.views.modals.Headers", {
 
   members: {
     __service: null,
-     
+
     __headersListWidget: null,
 
-    __headersListArray: null,
 
     _init: function() {
       this.setLayout(new qx.ui.layout.VBox(10));
@@ -67,11 +66,27 @@ qx.Class.define("qxgraphql.demo.views.modals.Headers", {
     },
 
     _onOk: function(e) {
-      this.close();
+      const model = this.__headersListWidget.getModel();
+      const service = this.__service;
+
+      // first reset all the request headers
+      service.clearRequestHeaders();
+
+      // then set the new headers one by one
+      model.forEach(function(header) {
+        const key = header.getKey();
+
+        // if key is not null or empty string set it as header
+        if (key) {
+          service.setRequestHeader(key, header.getValue());
+        }
+        return service;
+      }, this); 
+
+      this.destroy();
     },
 
     _onCancel: function(e) {
-      this.close();
       this.destroy();
     },
 
@@ -83,8 +98,7 @@ qx.Class.define("qxgraphql.demo.views.modals.Headers", {
       return this.__service;
     }
   },
-    destruct: function() {
-      this.disposeObjects("__headersListArray");
-      this.__headersListWidget.destroy();
-    }
+  destruct: function() {
+    this.__headersListWidget.destroy();
+  }
 });

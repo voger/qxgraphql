@@ -1,7 +1,7 @@
 qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
   extend : qx.ui.core.scroll.AbstractScrollArea,
   include: [
-    qx.ui.core.MChildrenHandling
+    qx.ui.core.MRemoteChildrenHandling
   ],
   implement : [
     qx.ui.form.IModel
@@ -21,7 +21,10 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
     this.__marshaler.toClass({key: null, value: null}, true);
 
 
-    this._setLayout(new qx.ui.layout.VBox(5));
+    this.__container = this._createItemsContainer();
+    this.__container.addListener("addChildWidget", this._onAddChild, this);
+
+    this.getChildControl("pane").add(this.__container);
 
 
     const _this = this;
@@ -48,6 +51,7 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
     this.__controller = new qx.data.controller.List(null, this);
     this.__controller.setDelegate(delegate);
 
+
     this.initModel(model);
   },
 
@@ -73,8 +77,17 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
 
     __marshaler: null, 
 
+    __container: null,
+
+    _createItemsContainer: function() {
+      const layout = new qx.ui.layout.VBox(10);
+      const container =  new qx.ui.container.Composite(layout);
+      container.setPaddingRight(3);
+      return container;
+    },
+
     getChildrenContainer : function() {
-      return this.getChildControl("pane");
+      return this.__container;
     },
 
     _applyModel: function(value, old) {
@@ -82,9 +95,6 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
       if (value) {
         this.__trailWithEmpty();
         value.addListener("changeBubble", this.__trailWithEmpty, this);
-        value.addListener("changeBubble", function(e) {
-          console.log(e.getData);
-        }, this);
       }
 
       this.__controller.setModel(value);
@@ -140,6 +150,11 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
       return this.__marshaler.toModel({key: key, value: value});
     },
 
+    _onAddChild: function(e) {
+      const child = e.getData();
+      this.scrollChildIntoView(child);
+    },
+
 
 
     _deleteItem: function(item) {
@@ -150,7 +165,9 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
   },
 
   destruct: function() {
-    this._disposeObjects("__controller");
+    this.getChildrenContainer().destroy();
+    this.__controller.dispose();
+    this.__marshaler.dispose();
   }
 
 });

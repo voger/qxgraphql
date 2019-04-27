@@ -137,10 +137,11 @@ qx.Class.define("qxgraphql.HTTP", {
 
 
     /**
-     * Clears all the headers
+     * Clears all the headers. Please note that it also
+     * resets `Accept` and `Content-Type` headers to null.
      *
      */
-    clearResetHeaders: function() {
+    clearRequestHeaders: function() {
       // first clear `this` properties
       this.setAccept(null);
       this.setContentType(null);
