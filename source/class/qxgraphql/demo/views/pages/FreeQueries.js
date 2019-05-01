@@ -96,7 +96,7 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
         // check that the query form is valid and url is not a falsy value
         const service = this.getService();
         if (form.validate() && service.getUrl()) {
-          service.send(this.__formController.getModel(), null, this)
+          service.send(this.__formController.getModel(), undefined, this)
             .then(function(res) {
               let response = res.getResponse(); 
               let result = JSON.stringify(response, null, 2);

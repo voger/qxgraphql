@@ -59,6 +59,16 @@ qx.Class.define("qxgraphql.HTTP", {
 
     },
 
+    /**
+     * Number of communication attempts. Default is 5
+     *
+     */
+    attempts: {
+      validate: "_validateAttempts",
+      nullable: false,
+      init: 5
+    },
+
     url: {
       validate: qx.util.Validate.url(),
       check: "String",
@@ -154,24 +164,24 @@ qx.Class.define("qxgraphql.HTTP", {
     /**
      * Sends the query and returns a promise.
      * @query {String} The query to send
-     * @headers {Object} An object of key value pairs with the request headers. 
-     *                   These headers will be used instead of the default headers 
-     *                   set in this object
+     * @attempts {Integer} The number of attempts to try sending the query
+     *                     after failure. Must be a positive integer greater
+     *                     than 0. Default is the value of the property attempts
      * @scope {Object} The scope to which the promise object is bound
      * @return {qx.Promise}
      */
-    send: function(query, headers, scope) {
+    send: function(query, attempts = this.getAttempts() , scope) {
       const request = this.__getRequest();
       request.setUrl(this.getUrl());
       // only POST is supported for now
       request.setMethod("POST");
       request.setTimeout(this.getTimeout());
 
-      const requestHeaders = headers ? 
-        Object.entries(headers) : this.getRequestHeaders();
-
-      requestHeaders.forEach((value, header) => 
+      this.getRequestHeaders().forEach((value, header) => 
         request.setRequestHeader(header, value));
+
+      // request can keep track of the times it was attempted
+      request.setUserData("attempts", attempts);
 
 
       request.setRequestData(query.toJson());
@@ -183,27 +193,38 @@ qx.Class.define("qxgraphql.HTTP", {
       // Event listeners are bound to this object's scope
       return new qx.Promise(function(resolve, reject) {
         // add various listeners
-        request.addListenerOnce("success", function() {
+        request.addListener("success", function() {
           var props = [request.getResponse(), null, false, request, request.getPhase()];
           this.fireEvent("success", qxgraphql.event.type.GraphQL, props);
           resolve(request);
         }, service);
 
-        request.addListenerOnce("fail", function() {
+        request.addListener("fail", function() {
+          debugger;
           var props = [request.getResponse(), null, false, request, request.getPhase()];
           this.fireEvent("error", qxgraphql.event.type.GraphQL, props);
-          reject(new qx.type.BaseError(request.getResponse()));
+
+          if (request.getUserData("attempts") > 0) {
+            console.log("attempt: " + request.getUserData("attempts"));
+            request.setUserData("attempts", request.getUserData("attempts") - 1);
+            request.send();
+          } else {
+            reject(new qx.type.BaseError(request.getResponse()));
+          }
         }, service);
 
 
-        request.addListenerOnce("loadEnd", function() {
-          request.dispose();
-        }, service);
+        // request.addListener("loadEnd", function() {
+        //   request.dispose();
+        // }, service);
 
         // finaly send the request
+        request.setUserData("attempts", request.getUserData("attempts") - 1);
         request.send();
       }, scope);
     },
+
+
 
     __getRequest: function() {
       return new qx.io.request.Xhr();
@@ -215,9 +236,19 @@ qx.Class.define("qxgraphql.HTTP", {
       try {
         qx.core.Assert.assertPositiveInteger(value);
       } catch (e) {
-        throw new qx.core.ValidationError(`ValidationError: Time out value must be a positive integer. Found : ${value}.`);
+        throw new qx.core.ValidationError(`ValidationError: Time out value must be a positive integer. Found: ${value}.`);
       }
     },
+
+    _validateAttempts: function(value) {
+      try {
+        qx.core.Assert.assertPositiveInteger(value);
+        qx.core.Assert.assertTrue(value > 0);
+      } catch (e) {
+        throw new qx.core.ValidationError(`ValidationError: Attempts must be a natural number greater than 0. Found: ${value}.`);
+      }
+    },
+
 
     _applyAccept: function(value) {
       if (value === null) {

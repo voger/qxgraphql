@@ -1,11 +1,11 @@
 {
+  "bundle": {
+    "include": ["qx.*"]
+  },
   "targets": [
     {
       "type": "source",
-      "outputPath": "compiled/source",
-      "bundle": {
-        "include": "qx.*"
-      }
+      "outputPath": "compiled/source"
     },
 
     {
@@ -24,6 +24,5 @@
       "include": ["qxgraphql.GraphqlQueryCompress"],
       "bootPath": "source/boot"
     }
-  ],
-  "libraries": [ "../../../../opt/qooxdoo/framework", "." ]
+  ]
 }
