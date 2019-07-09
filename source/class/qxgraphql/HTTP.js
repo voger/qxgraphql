@@ -174,6 +174,9 @@ qx.Class.define("qxgraphql.HTTP", {
      * @request {qx.io.request.AbstractRequest} The request to attempt
      * @attempts {Integer} The number of attempts
      * @delay {Integer} The first delay between the retries.
+     * @runs {Integer} The times it has run so far. This parametter is used to help 
+     *                 with the backtracking algorithm and the deafult value of `1`
+     *                 shouldn't be changed.
      * @return {qx.Promise} A promise that resolves with the result of the request 
      */
     __performAttempts: function(request, attempts, delay = this.__BASE_DELAY, runs = 1) {
