@@ -18,11 +18,16 @@
   "homepage": "https://github.com/voger/qxgraphql#readme",
   "dependencies": {},
   "devDependencies": {
+    "coveralls": "^3.0.4",
     "expose-loader": "^0.7.5",
     "graphql-query-compress": "^1.2.1",
     "license-webpack-plugin": "^2.1.1",
+    "nyc": "^14.1.1",
+    "puppeteer": "^1.18.1",
+    "puppeteer-to-istanbul": "^1.2.2",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.0",
+    "yargs": "^13.2.4"
   }
 }

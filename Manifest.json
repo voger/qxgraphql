@@ -1,42 +1,29 @@
 {
-  "info" : 
-  {
-    "name" : "qxgraphql",
-
-    "summary" : "GraphQL implementation for Qooxdoo",
-    "description" : "Simple GraphQL implementation for Qooxdoo",
-
-    "homepage" : "https://github.com/voger/qxgraphql",
-
-    "license" : "MIT license",
-    "authors" : [
-      {
-        "name": "",
-        "email": "voger"
-      }
-    ],
-
-    "version" : "0.0.1-alpha"
+  "info": {
+    "name": "qxgraphql",
+    "summary": "GraphQL implementation for Qooxdoo",
+    "description": "Simple GraphQL implementation for Qooxdoo",
+    "homepage": "https://github.com/voger/qxgraphql",
+    "license": "MIT license",
+    "authors": [],
+    "version": "0.0.1"
   },
-
-  "provides" : 
-  {
-    "namespace"   : "qxgraphql",
-    "encoding"    : "utf-8",
-    "class"       : "source/class",
-    "resource"    : "source/resource",
-    "translation" : "source/translation",
-    "type"        : "contribution"
+  "provides": {
+    "namespace": "qxgraphql",
+    "encoding": "utf-8",
+    "class": "source/class",
+    "resource": "source/resource",
+    "translation": "source/translation"
   },
-
   "requires": {
-    "qooxdoo-sdk"     : "^6.0.0-alpha-20181226-a3c2b0b",
-    "qooxdoo-compiler": "^0.2.73"
+    "@qooxdoo/compiler": "^1.0.0-beta.20190618-0639",
+    "@qooxdoo/framework": "^6.0.0-alpha-20190511-1022",
+    "qooxdoo/qxl.testtapper": "^0.4.0"
   },
-
   "externalResources": {
     "script": [
       "js/gqcpr.js/gqcpr.js"
     ]
-  }
+  },
+  "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json"
 }

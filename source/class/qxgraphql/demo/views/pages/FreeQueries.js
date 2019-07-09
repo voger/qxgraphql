@@ -12,7 +12,7 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
   properties: {
     service: {
-      init: null,
+      deferredInit: true,
       event: "changeService"
     }
   },
@@ -23,7 +23,7 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
     init: function() {
       this.setLayout(new qx.ui.layout.Dock(30));
-      this.setService(new qxgraphql.HTTP());
+      this.initService(new qxgraphql.HTTP());
 
       var urlForm = this.__createUrlForm();
       this.add(new qx.ui.form.renderer.Single(urlForm), {edge: "north"});
@@ -31,14 +31,14 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       var buttonsField = this.__createButtonsField();
       this.add(buttonsField, {edge: "south", height: "10%"});
 
+      // add the result field
+      var resultField = this.__createResultField();
+      this.add(resultField, {edge: "east", width: "50%"});
+
       var queryForm = this.__createQueryForm();
       var renderedForm = new qxgraphql.demo.layout.renderer.FreeQueries(queryForm);
       this.add(renderedForm, {edge: "west", width: "50%"});
 
-
-      // add the result field
-      var resultField = this.__createResultField();
-      this.add(resultField, {edge: "east", width: "50%"});
     },
 
     __createUrlForm: function() {
@@ -49,19 +49,9 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
 
       // if service is set then setup binding
       const service = this.getService();
-      if (service) {
-        urlField.bind("changeValue", service, "url", {
-          onUpdate: function(e) {
-            urlField.setValid(true);
-          },
-          onSetFail: function(e) {
-            urlField.setValid(false);
-            urlField.setInvalidMessage(e.toString());
-          }
-        });
-      }
+      urlField.bind("changeValue", service, "url");
 
-      form.add(urlField, "Server Address", qx.util.Validate.url());
+      form.add(urlField, "Server Address");
 
 
       // FIXME: next line should be removed after we finish with this
@@ -92,20 +82,22 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
       execButton.setFont(qx.bom.Font.fromString("24px sans-serif bold"));
       execButton.setCenter(true);
 
-      execButton.addListener("execute", function() {
+      execButton.addListener("execute", async function() {
         // check that the query form is valid and url is not a falsy value
         const service = this.getService();
         if (form.validate() && service.getUrl()) {
-          service.send(this.__formController.getModel(), null, this)
-            .then(function(res) {
-              let response = res.getResponse(); 
-              let result = JSON.stringify(response, null, 2);
-              this.__resultController.getModel().setResult(result);
-            })
-            .catch(function(e) {
-              let response = JSON.stringify(e.getComment(), null, 2);
-              this.__resultController.getModel().setResult(response);
-            });
+          const resultModel = this.__resultController.getModel();
+
+          try {
+            const formModel = this.__formController.getModel();
+
+            const response = await service.send(formModel);
+            const result = JSON.stringify(response, null, 2);
+            resultModel.setResult(result);
+          } catch (error) {
+            const toString = error.toString();
+            resultModel.setResult(toString);
+          }
         }
       }, this);
       form.addButton(execButton);

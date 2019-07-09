@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/resource/schema/v1/compile.json",
+  "applications": [
+    {
+      "class": "qxl.testtapper.Application",
+      "name": "testtapper",
+      "title": "TestTAPper - The Qooxdoo Test Runner",
+      "theme": "qx.theme.Simple",
+      "include": [
+        "qxl.testtapperdemo.test.*"
+      ]
+    }
+  ],
+//  "include": [
+//    "qx.*",
+//    "q",
+//    "qxWeb"
+//  ],
+  "exclude": [
+    "qx.test.*",
+    "qx.module.Blocker",
+    "qx.module.Placement"
+  ],
+  "targets": [
+    {
+      "type": "source",
+      "outputPath": "source-output",
+      "bundle": {
+        "include": "qx.*"
+      }
+    },{
+      "type": "build",
+      "outputPath": "build-output"
+    }
+  ],
+
+  "defaultTarget": "source",
+
+  "locales": [
+    "en"
+  ],
+  "serve": {
+     "listenPort": 8089
+  }
+}

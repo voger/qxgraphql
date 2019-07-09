@@ -1,0 +1,18 @@
+language: node_js
+node_js: "10"
+
+script:
+  - ./runtests.sh
+  - npx qx compile --machine-readable --target=build
+  - rm build-output/*.json
+
+after_success:
+  - npx nyc report --reporter=text-lcov | npx coveralls
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  local-dir: build-output
+  on:
+    branch: master
