@@ -42,6 +42,9 @@ qx.Class.define("qxgraphql.demo.Application", {
 
       // Document is the application root
       var doc = this.getRoot();
+
+
+       
       doc.add(new qxgraphql.demo.views.TabView(), {edge: 0});
     }
   }

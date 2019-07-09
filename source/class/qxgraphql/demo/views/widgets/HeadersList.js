@@ -81,7 +81,7 @@ qx.Class.define("qxgraphql.demo.views.widgets.HeadersList", {
 
     _createItemsContainer: function() {
       const layout = new qx.ui.layout.VBox(10);
-      const container =  new qx.ui.container.Composite(layout);
+      const container = new qx.ui.container.Composite(layout);
       container.setPaddingRight(3);
       return container;
     },
