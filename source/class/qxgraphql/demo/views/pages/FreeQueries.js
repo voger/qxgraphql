@@ -91,7 +91,8 @@ qx.Class.define("qxgraphql.demo.views.pages.FreeQueries", {
           try {
             const formModel = this.__formController.getModel();
 
-            const response = await service.send(formModel);
+            const request = await service.send(formModel);
+            const response = request.getResponse(); 
             const result = JSON.stringify(response, null, 2);
             resultModel.setResult(result);
           } catch (error) {
