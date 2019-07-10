@@ -5,6 +5,7 @@
 /source/script/
 /compiled
 /contrib
+/qx_packages/
 
 
 # node-related files
