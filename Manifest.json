@@ -5,7 +5,7 @@
     "description": "Simple GraphQL implementation for Qooxdoo",
     "homepage": "https://github.com/voger/qxgraphql",
     "license": "MIT license",
-    "authors": [],
+    "authors": ["voger"],
     "version": "0.0.1"
   },
   "provides": {
@@ -16,9 +16,8 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/compiler": "^1.0.0-beta.20190618-0639",
-    "@qooxdoo/framework": "^6.0.0-alpha-20190511-1022",
-    "qooxdoo/qxl.testtapper": "^0.4.0"
+    "@qooxdoo/compiler": "^1.0.0",
+    "@qooxdoo/framework": "^6.0.0"
   },
   "externalResources": {
     "script": [
