@@ -33,21 +33,6 @@
         "qxgraphql.GraphqlQueryCompress"
       ],
       "bootPath": "source/boot"
-    },
-    {
-      "class": "qxl.testtapper.Application",
-      "name": "testtapper",
-      "theme": "qx.theme.Simple",
-      "title": "Qooxdoo TestTAPper",
-      "environment": {
-        "qx.icontheme": "Tango"
-      },
-      "include": [
-        "qxgraphql.test.*"
-      ],
-      "exclude": [
-        "qx.test.*"
-      ]
     }
   ],
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/compile-1-0-0.json"
