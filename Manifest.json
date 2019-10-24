@@ -7,13 +7,13 @@
     "license": "MIT license",
     "authors": [
       {
-        "name": "voger"
+        "name": "voger",
+        "email": ""
       }
     ],
     "version": "0.0.1"
   },
   "provides": {
-    "type": "add-in",
     "namespace": "qxgraphql",
     "encoding": "utf-8",
     "class": "source/class",
