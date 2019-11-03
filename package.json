@@ -1,10 +1,10 @@
 {
   "name": "qxgraphql",
-  "version": "0.0.2-1",
-  "description": "<img src=\\\\\\\"https://raw.githubusercontent.com/voger/qxgraphql/master/images/uc.jpg?sanitize=true&raw=true\\\\\\\" />",
+  "version": "0.1.0",
+  "description": "<img src=\\\\\\\\\\\\\\\"https://raw.githubusercontent.com/voger/qxgraphql/master/images/uc.jpg?sanitize=true&raw=true\\\\\\\\\\\\\\\" />",
   "main": "index.js",
   "scripts": {
-    "test": "echo \\\\\\\"Error: no test specified\\\\\\\" && exit 1"
+    "test": "echo \\\\\\\\\\\\\\\"Error: no test specified\\\\\\\\\\\\\\\" && exit 1"
   },
   "repository": {
     "type": "git",
