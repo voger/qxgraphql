@@ -21,8 +21,8 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/compiler": "^1.0.0",
-    "@qooxdoo/framework": "^6.0.0"
+    "@qooxdoo/compiler": "^1.0.0-beta.20191031-1604",
+    "@qooxdoo/framework": "^6.0.0-beta-20191031-1343"
   },
   "externalResources": {
     "script": [
