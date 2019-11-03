@@ -11,7 +11,7 @@
         "email": ""
       }
     ],
-    "version": "0.0.7"
+    "version": "0.0.8"
   },
   "provides": {
     "namespace": "qxgraphql",
