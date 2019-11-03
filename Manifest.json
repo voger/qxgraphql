@@ -11,20 +11,7 @@
         "email": ""
       }
     ],
-    "version": {
-      "options": {
-        "loose": false,
-        "includePrerelease": false
-      },
-      "loose": false,
-      "raw": "0.0.2",
-      "major": 0,
-      "minor": 0,
-      "patch": 2,
-      "prerelease": [],
-      "build": [],
-      "version": "v0.0.2"
-    }
+    "version": "0.0.2"
   },
   "provides": {
     "namespace": "qxgraphql",
