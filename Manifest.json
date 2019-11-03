@@ -17,13 +17,13 @@
         "includePrerelease": false
       },
       "loose": false,
-      "raw": "0.1.0",
+      "raw": "0.0.2",
       "major": 0,
-      "minor": 1,
-      "patch": 0,
+      "minor": 0,
+      "patch": 2,
       "prerelease": [],
       "build": [],
-      "version": "0.1.0"
+      "version": "v0.0.2"
     }
   },
   "provides": {
