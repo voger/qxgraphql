@@ -16,11 +16,6 @@
   ],
   "defaultTarget": "source",
 
-  "libraries": [
-        "../qooxdoo/framework",
-        "."
-    ],
-
   "locales": [
     "en"
   ],
