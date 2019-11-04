@@ -11,7 +11,7 @@
         "email": ""
       }
     ],
-    "version": "0.0.1"
+    "version": "0.0.2"
   },
   "provides": {
     "namespace": "qxgraphql",
@@ -31,4 +31,3 @@
   },
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json"
 }
-
