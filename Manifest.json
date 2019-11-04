@@ -11,20 +11,7 @@
         "email": ""
       }
     ],
-    "version": {
-      "options": {
-        "loose": false,
-        "includePrerelease": false
-      },
-      "loose": false,
-      "raw": "0.0.1",
-      "major": 0,
-      "minor": 0,
-      "patch": 1,
-      "prerelease": [],
-      "build": [],
-      "version": "0.0.1"
-    }
+    "version": "0.0.1"
   },
   "provides": {
     "namespace": "qxgraphql",
@@ -44,3 +31,4 @@
   },
   "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json"
 }
+
